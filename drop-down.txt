@@ -1,0 +1,109 @@
+
+    class Program
+    {
+        static string url = "http://www.aiub.edu/";
+        static public IWebDriver driver = new ChromeDriver();
+        static string expectedTitle = "Home | American International University-Bangladesh (AIUB)";
+        static void Main(string[] args)
+        {
+            //if (TC_01())
+            //{
+            //    Console.WriteLine("TC_01: Passed");
+            //}
+            //else
+            //{
+            //    Console.WriteLine("TC_01: Failed");
+            //}
+            //if (TC_02())
+            //{
+            //    Console.WriteLine("TC_02: Passed");
+            //}
+            //else
+            //{
+            //    Console.WriteLine("TC_02: Failed");
+            //}
+            TC_01();
+            TC_03();
+
+        }
+
+        static bool TC_01()
+        {
+            driver.Navigate().GoToUrl(url);
+            string actualTitle = driver.Title;
+
+            if (expectedTitle == actualTitle)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
+        static bool TC_02()
+        {
+            if (TC_01())
+            {
+                IWebElement campus = driver.FindElement(By.ClassName("img-responsive"));
+                Actions action = new Actions(driver);
+                action.MoveToElement(campus);
+                action.Build();
+                action.Perform();
+                action.Click(campus);
+                action.Perform();
+
+                string expectedHeaderText = "AIUB CAMPUS";
+
+                string actualHeaderText = driver.FindElement(By.ClassName("header-title")).Text;
+
+                if (expectedHeaderText == actualHeaderText)
+                    return true;
+                else
+                    return false;
+
+            }
+            else
+            {
+                Console.WriteLine("Falied due to TC_01");
+                return false;
+            }
+
+        }
+    //    IWebElement about = driver.FindElement(By.CssSelector("#menu-primary-navigation > li:nth-child(2) > a"));
+
+
+    //    Actions action = new Actions(driver);
+    //    action.MoveToElement(about).Perform();
+
+    //        if (driver.FindElement(By.CssSelector("//*[@id=menu - primary - navigation]/li[2]/ul/li[1]/a")).Displayed)
+    //        {
+    //            driver.FindElement(By.CssSelector("#menu-primary-navigation > li:nth-child(2) > ul > li:nth-child(1) > a")).Click();
+    //}
+    static void TC_03()
+        {
+            IWebElement about = driver.FindElement(By.ClassName(".dropdown-toggle.disabled"));
+
+
+            Actions action = new Actions(driver);
+            action.MoveToElement(about).Perform();
+
+            if (driver.FindElement(By.LinkText("Information")).Displayed)
+            {
+                driver.FindElement(By.LinkText("Information")).Click();
+            }
+            else
+                Console.WriteLine("Submenu isn't available");
+            IWebElement loginButton = driver.FindElement(By.CssSelector(".glyphicon.glyphicon-user"));
+            loginButton.Click();
+
+            string userName = "123456";
+            string pass = "123456";
+
+            driver.FindElement(By.Id("username")).SendKeys(userName);
+            driver.FindElement(By.Id("password")).SendKeys(pass);
+        }
+
+    }
